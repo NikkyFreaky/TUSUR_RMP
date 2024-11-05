@@ -115,6 +115,19 @@ class MainScreenCubit extends Cubit<MainScreenState> {
     ));
   }
 
+  final List<Map<String, dynamic>> history = [];
+  void saveResult(double fileSizeInBits, double fileSizeInBytes,
+      double fileSizeInKB, double fileSizeInMB) {
+    final result = {
+      'fileSizeInBits': fileSizeInBits,
+      'fileSizeInBytes': fileSizeInBytes,
+      'fileSizeInKB': fileSizeInKB,
+      'fileSizeInMB': fileSizeInMB,
+      'timestamp': DateTime.now().toString(),
+    };
+    history.add(result);
+  }
+
   void calculateFileSize() {
     if (!agreement) {
       emit(MainScreenFieldError(
@@ -132,21 +145,6 @@ class MainScreenCubit extends Cubit<MainScreenState> {
       return;
     }
 
-    if (discretizationController.text.isEmpty ||
-        bitDepthController.text.isEmpty ||
-        durationController.text.isEmpty ||
-        double.tryParse(discretizationController.text) == null ||
-        double.tryParse(discretizationController.text)! <= 0 ||
-        double.tryParse(bitDepthController.text) == null ||
-        double.tryParse(bitDepthController.text)! <= 0 ||
-        double.tryParse(durationController.text) == null ||
-        double.tryParse(durationController.text)! <= 0) {
-      _validateDiscretization();
-      _validateBitDepth();
-      _validateDuration();
-      return;
-    }
-
     try {
       int channels = _getChannels(fileType);
       double discretization = double.parse(discretizationController.text);
@@ -157,6 +155,8 @@ class MainScreenCubit extends Cubit<MainScreenState> {
       double fileSizeInBytes = fileSizeInBits / 8;
       double fileSizeInKB = fileSizeInBytes / 1024;
       double fileSizeInMB = fileSizeInKB / 1024;
+
+      saveResult(fileSizeInBits, fileSizeInBytes, fileSizeInKB, fileSizeInMB);
 
       emit(MainScreenResult(
         fileSizeInBits: fileSizeInBits,
