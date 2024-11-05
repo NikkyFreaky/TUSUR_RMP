@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'main_screen_state.dart';
+import '../../services/database_service.dart';
 
 class MainScreenCubit extends Cubit<MainScreenState> {
   MainScreenCubit() : super(MainScreenInitial()) {
@@ -158,6 +159,17 @@ class MainScreenCubit extends Cubit<MainScreenState> {
       double fileSizeInKB = fileSizeInBytes / 1024;
       double fileSizeInMB = fileSizeInKB / 1024;
 
+      saveCalculation(
+        fileType: fileType,
+        discretization: discretization,
+        bitDepth: bitDepth,
+        duration: duration,
+        fileSizeInBits: fileSizeInBits,
+        fileSizeInBytes: fileSizeInBytes,
+        fileSizeInKB: fileSizeInKB,
+        fileSizeInMB: fileSizeInMB,
+      );
+
       emit(MainScreenResult(
         fileSizeInBits: fileSizeInBits,
         fileSizeInBytes: fileSizeInBytes,
@@ -188,5 +200,28 @@ class MainScreenCubit extends Cubit<MainScreenState> {
     fileType = 'WAV';
     agreement = false;
     emit(MainScreenInitial());
+  }
+
+  void saveCalculation({
+    required String fileType,
+    required double discretization,
+    required double bitDepth,
+    required double duration,
+    required double fileSizeInBits,
+    required double fileSizeInBytes,
+    required double fileSizeInKB,
+    required double fileSizeInMB,
+  }) async {
+    final data = {
+      'fileType': fileType,
+      'discretization': discretization,
+      'bitDepth': bitDepth,
+      'duration': duration,
+      'fileSizeInBits': fileSizeInBits,
+      'fileSizeInBytes': fileSizeInBytes,
+      'fileSizeInKB': fileSizeInKB,
+      'fileSizeInMB': fileSizeInMB,
+    };
+    await DatabaseService().insertCalculation(data);
   }
 }

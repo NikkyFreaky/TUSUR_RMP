@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'cubit/main_screen_cubit.dart';
 import 'cubit/main_screen_state.dart';
 import '../styles/form_style.dart';
+import 'history_screen.dart';
 
 class MainScreen extends StatelessWidget {
   @override
@@ -14,6 +15,15 @@ class MainScreen extends StatelessWidget {
           title: const Text('Злобин Никита Сергеевич'),
           backgroundColor: Colors.black,
           centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.history),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HistoryScreen()),
+              );
+            },
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(15.0),
