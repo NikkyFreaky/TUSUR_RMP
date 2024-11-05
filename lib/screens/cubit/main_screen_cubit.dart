@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'main_screen_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class MainScreenCubit extends Cubit<MainScreenState> {
   MainScreenCubit() : super(MainScreenInitial()) {
     discretizationController.addListener(_validateDiscretization);
     bitDepthController.addListener(_validateBitDepth);
     durationController.addListener(_validateDuration);
+    loadHistory();
   }
 
   final TextEditingController discretizationController =
@@ -16,6 +19,7 @@ class MainScreenCubit extends Cubit<MainScreenState> {
 
   String fileType = 'WAV';
   bool agreement = false;
+  List<Map<String, dynamic>> history = [];
 
   void updateFileType(String? newValue) {
     fileType = newValue!;
@@ -115,19 +119,6 @@ class MainScreenCubit extends Cubit<MainScreenState> {
     ));
   }
 
-  final List<Map<String, dynamic>> history = [];
-  void saveResult(double fileSizeInBits, double fileSizeInBytes,
-      double fileSizeInKB, double fileSizeInMB) {
-    final result = {
-      'fileSizeInBits': fileSizeInBits,
-      'fileSizeInBytes': fileSizeInBytes,
-      'fileSizeInKB': fileSizeInKB,
-      'fileSizeInMB': fileSizeInMB,
-      'timestamp': DateTime.now().toString(),
-    };
-    history.add(result);
-  }
-
   void calculateFileSize() {
     if (!agreement) {
       emit(MainScreenFieldError(
@@ -188,5 +179,41 @@ class MainScreenCubit extends Cubit<MainScreenState> {
     fileType = 'WAV';
     agreement = false;
     emit(MainScreenInitial());
+  }
+
+  Future<void> saveResult(double fileSizeInBits, double fileSizeInBytes,
+      double fileSizeInKB, double fileSizeInMB) async {
+    final prefs = await SharedPreferences.getInstance();
+    final result = {
+      'fileSizeInBits': fileSizeInBits,
+      'fileSizeInBytes': fileSizeInBytes,
+      'fileSizeInKB': fileSizeInKB,
+      'fileSizeInMB': fileSizeInMB,
+      'timestamp': DateTime.now().toString(),
+    };
+    history.add(result);
+
+    List<String> historyAsJson = history.map((e) => jsonEncode(e)).toList();
+    await prefs.setStringList('calculationHistory', historyAsJson);
+    print("Result added to history: $result");
+  }
+
+  Future<void> loadHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String>? storedHistory = prefs.getStringList('calculationHistory');
+    if (storedHistory != null) {
+      history = storedHistory.map((e) => _parseResult(e)).toList();
+      emit(MainScreenInitial()); // Обновляем состояние
+    }
+    print("Loaded history: $history");
+  }
+
+  Map<String, dynamic> _parseResult(String resultString) {
+    try {
+      return jsonDecode(resultString);
+    } catch (e) {
+      print("Error parsing result: $e");
+      return {}; // Возвращаем пустую карту в случае ошибки
+    }
   }
 }

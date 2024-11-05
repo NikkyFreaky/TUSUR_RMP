@@ -21,8 +21,7 @@ class HistoryScreen extends StatelessWidget {
                 final result = history[index];
                 return ListTile(
                   title: Text('Результат ${index + 1}'),
-                  subtitle: Text(
-                      'Размер файла: ${result['fileSizeInMB'].toStringAsFixed(2)} MB'),
+                  subtitle: Text('Размер файла: ${result['fileSizeInMB']} MB'),
                 );
               },
             ),
