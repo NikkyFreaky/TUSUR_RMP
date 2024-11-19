@@ -24,8 +24,7 @@ class HistoryScreen extends StatelessWidget {
                 itemCount: state.calculations.length,
                 itemBuilder: (context, index) {
                   final calculation = state.calculations[index];
-                  final reverseIndex =
-                      state.calculations.length - index; // Обратный индекс
+                  final reverseIndex = state.calculations.length - index;
                   return ListTile(
                     title: Text("$reverseIndex расчет:"),
                     subtitle: Text('Тип файла: ${calculation['fileType']}\n'
