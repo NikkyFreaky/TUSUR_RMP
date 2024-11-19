@@ -28,14 +28,11 @@ class HistoryScreen extends StatelessWidget {
                       state.calculations.length - index; // Обратный индекс
                   return ListTile(
                     title: Text("$reverseIndex расчет:"),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Тип файла: ${calculation['fileType']}"),
-                        Text(
-                            "Размер: ${calculation['fileSizeInMB'].toStringAsFixed(2)} МБ"),
-                      ],
-                    ),
+                    subtitle: Text('Тип файла: ${calculation['fileType']}\n'
+                        'Частота дискретизации: ${calculation['discretization'].toInt()} Гц\n'
+                        'Глубина кодирования звука: ${calculation['bitDepth'].toInt()} бит\n'
+                        'Длительность звуковой дорожки: ${calculation['duration'].toInt()} секунд\n'
+                        'Размер файла: ${calculation['fileSizeInMB'].toStringAsFixed(2)} МБ'),
                   );
                 },
               );
