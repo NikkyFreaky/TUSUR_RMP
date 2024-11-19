@@ -10,6 +10,7 @@ class HistoryScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text("История расчетов"),
+          centerTitle: true,
         ),
         body: BlocBuilder<HistoryScreenCubit, HistoryScreenState>(
           builder: (context, state) {
@@ -23,10 +24,17 @@ class HistoryScreen extends StatelessWidget {
                 itemCount: state.calculations.length,
                 itemBuilder: (context, index) {
                   final calculation = state.calculations[index];
+                  final reverseIndex =
+                      state.calculations.length - index; // Обратный индекс
                   return ListTile(
-                    title: Text("Тип файла: ${calculation['fileType']}"),
-                    subtitle: Text(
-                      "Размер: ${calculation['fileSizeInMB'].toStringAsFixed(2)} МБ",
+                    title: Text("$reverseIndex расчет:"),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Тип файла: ${calculation['fileType']}"),
+                        Text(
+                            "Размер: ${calculation['fileSizeInMB'].toStringAsFixed(2)} МБ"),
+                      ],
                     ),
                   );
                 },

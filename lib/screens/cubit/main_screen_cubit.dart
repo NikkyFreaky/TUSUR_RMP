@@ -164,9 +164,6 @@ class MainScreenCubit extends Cubit<MainScreenState> {
         discretization: discretization,
         bitDepth: bitDepth,
         duration: duration,
-        fileSizeInBits: fileSizeInBits,
-        fileSizeInBytes: fileSizeInBytes,
-        fileSizeInKB: fileSizeInKB,
         fileSizeInMB: fileSizeInMB,
       );
 
@@ -207,9 +204,6 @@ class MainScreenCubit extends Cubit<MainScreenState> {
     required double discretization,
     required double bitDepth,
     required double duration,
-    required double fileSizeInBits,
-    required double fileSizeInBytes,
-    required double fileSizeInKB,
     required double fileSizeInMB,
   }) async {
     final data = {
@@ -217,9 +211,6 @@ class MainScreenCubit extends Cubit<MainScreenState> {
       'discretization': discretization,
       'bitDepth': bitDepth,
       'duration': duration,
-      'fileSizeInBits': fileSizeInBits,
-      'fileSizeInBytes': fileSizeInBytes,
-      'fileSizeInKB': fileSizeInKB,
       'fileSizeInMB': fileSizeInMB,
     };
     await DatabaseService().insertCalculation(data);

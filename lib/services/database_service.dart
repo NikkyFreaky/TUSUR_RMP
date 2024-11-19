@@ -26,9 +26,6 @@ class DatabaseService {
             discretization REAL,
             bitDepth REAL,
             duration REAL,
-            fileSizeInBits REAL,
-            fileSizeInBytes REAL,
-            fileSizeInKB REAL,
             fileSizeInMB REAL
           )
         ''');
