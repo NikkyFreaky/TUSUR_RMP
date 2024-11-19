@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import '../models/nasa.dart';
+import '../models/photos.dart';
 import '../requests/api.dart';
 
 abstract class NasaState {}
@@ -7,24 +7,27 @@ abstract class NasaState {}
 class NasaLoadingState extends NasaState {}
 
 class NasaLoadedState extends NasaState {
-  Nasa data;
-  NasaLoadedState({required this.data});
+  final List<Photos> photos;
+  NasaLoadedState(this.photos);
 }
 
-class NasaErrorState extends NasaState {}
+class NasaErrorState extends NasaState {
+  final String errorMessage;
+  NasaErrorState(this.errorMessage);
+}
 
 class NasaCubit extends Cubit<NasaState> {
-  NasaCubit() : super(NasaLoadingState());
+  final ApiService apiService;
 
-  Future<void> loadData() async {
+  NasaCubit(this.apiService) : super(NasaLoadingState());
+
+  Future<void> loadPhotos() async {
+    emit(NasaLoadingState());
     try {
-      Map<String, dynamic> apiData = await getNasaData();
-      Nasa nasaData = Nasa.fromJson(apiData);
-      emit(NasaLoadedState(data: nasaData));
-      return;
-    } catch (e) {
-      emit(NasaErrorState());
-      return;
+      final photos = await apiService.fetchPhotos();
+      emit(NasaLoadedState(photos));
+    } catch (error) {
+      emit(NasaErrorState(error.toString()));
     }
   }
 }
