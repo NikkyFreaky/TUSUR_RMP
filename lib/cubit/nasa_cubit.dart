@@ -24,10 +24,10 @@ class NasaCubit extends Cubit<NasaState> {
   Future<void> loadPhotos() async {
     emit(NasaLoadingState());
     try {
-      final photos = await apiService.fetchPhotos();
+      final photos = await apiService.getNasaData();
       emit(NasaLoadedState(photos));
-    } catch (error) {
-      emit(NasaErrorState(error.toString()));
+    } catch (e) {
+      emit(NasaErrorState(e.toString()));
     }
   }
 }

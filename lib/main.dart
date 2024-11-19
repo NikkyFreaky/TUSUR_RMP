@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'screens/nasa_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(NasaApp());
 }
 
-class MyApp extends StatelessWidget {
+class NasaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Mars Rover Photos',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      title: 'Фотографии Марса',
       home: NasaScreen(),
     );
   }
