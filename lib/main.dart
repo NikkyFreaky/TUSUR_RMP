@@ -16,10 +16,13 @@ class NewsApp extends StatelessWidget {
       create: (context) => NewsCubit()..fetchNews(),
       child: MaterialApp(
         title: 'NewsBazar',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
         home: const HomeScreen(),
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.white,
+            elevation: 0,
+          ),
+        ),
       ),
     );
   }

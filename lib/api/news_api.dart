@@ -8,13 +8,13 @@ class NewsApi {
 
   Future<NewsModel> getAllNews() async {
     final response = await http.get(
-      Uri.parse('$baseUrl/top-headlines?country=us&apiKey=$apiKey'),
+      Uri.parse(
+          '$baseUrl/top-headlines?country=us&pageSize=100&apiKey=$apiKey'),
     );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
 
-      // Фильтрация новостей с необходимыми полями
       final List<Articles> filteredArticles = (jsonResponse['articles'] as List)
           .map((article) => Articles.fromJson(article))
           .where((article) =>
@@ -29,7 +29,7 @@ class NewsApi {
         articles: filteredArticles,
       );
     } else {
-      throw Exception('Failed to load news');
+      throw Exception('Не удалось загрузить новости');
     }
   }
 }

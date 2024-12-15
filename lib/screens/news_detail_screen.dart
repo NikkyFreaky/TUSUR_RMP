@@ -14,14 +14,11 @@ class NewsDetailScreen extends StatelessWidget {
         title: const Text('Детали новости'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (article?.urlToImage != null)
-                Image.network(article!.urlToImage!),
-              const SizedBox(height: 20),
               Text(
                 article?.title ?? 'Без заголовка',
                 style: const TextStyle(
@@ -30,6 +27,9 @@ class NewsDetailScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
+              if (article?.urlToImage != null)
+                Image.network(article!.urlToImage!),
+              const SizedBox(height: 20),
               Text(
                 article?.description ?? 'Описание отсутствует.',
                 style: const TextStyle(fontSize: 16),
