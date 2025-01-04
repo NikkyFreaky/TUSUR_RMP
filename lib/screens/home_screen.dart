@@ -31,9 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (articlesList.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
-
           filteredArticles = _filterArticles(articlesList);
-
           return Column(
             children: [
               _buildSearchField(),

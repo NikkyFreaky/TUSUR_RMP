@@ -52,7 +52,6 @@ class NewsDetailScreen extends StatelessWidget {
                       width: double.infinity,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) => Container(
-                        color: Colors.grey.shade300,
                         height: 200,
                         child: const Center(
                           child: Icon(
@@ -87,7 +86,6 @@ class NewsDetailScreen extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black54,
-                          height: 1.6,
                         ),
                         textAlign: TextAlign.justify,
                       ),
